@@ -1,0 +1,21 @@
+services:
+  lxmf_publish:
+    build: .
+    image: local/lxmf_publish
+    container_name: lxmf_publish
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    # Propagation stamps for offline subscribers are proof of work; one core is plenty
+    cpus: 1.0
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
